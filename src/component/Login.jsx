@@ -2,8 +2,13 @@ import React from 'react'
 import jwtDecode from 'jwt-decode';
 import {useState} from 'react'
 import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux'
+import { setAccesstoken } from '../slices/accesstokenSlice';
+
 const Login = () => {
   
+  const dispatch = useDispatch()
+
   const history = useHistory();
     const[email,setEmail] = useState('');
     const[password,setPassword] = useState('');
@@ -21,11 +26,13 @@ const Login = () => {
           });
       
           if (response.ok) {
+
+
             const data = await response.json();
 
+            dispatch(setAccesstoken(data.access_token))
 
-
-            console.log(data.access_token);
+            
             console.log("success authenticated");
 
 
@@ -35,7 +42,7 @@ const Login = () => {
         const token = data.access_token; // Replace this with the actual property name of your JWT token
             
          // Store the token in local storage
-           localStorage.setItem('token', token);
+          //  localStorage.setItem('token', token);
 
           //   // Decode the JWT token to retrieve user information, including the role
             const decodedToken = jwtDecode(token);

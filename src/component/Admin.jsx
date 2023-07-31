@@ -2,12 +2,16 @@ import React from 'react'
 import {Link} from'react-router-dom'
 import { useEffect,useState} from 'react';
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux'
+import { unsetAccesstoken } from '../slices/accesstokenSlice';
 
 const Admin = () => {
 
     // const [users, setUsers] = useState([]);
   const[myvariable,setMyvariable] = useState("")
-  const token = localStorage.getItem('token');
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.accesstoken.accesstoken)
+  // const count = useSelector((state) => state.counter.value)
 
     useEffect( () => {
       // Fetch data from API using the token in local storage
@@ -44,7 +48,7 @@ const Admin = () => {
         .then(response => {
           // Handle the successful response here
 
-          localStorage.removeItem('token');
+          dispatch(unsetAccesstoken())
           console.log(response.data);
 
 
